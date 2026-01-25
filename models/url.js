@@ -8,12 +8,13 @@ const urlSchema = new mongoose.Schema({
     },
     redirectURL:{
         type: String,
-        requird:true,
-        unique:true,
+        required:true,
     },
     visitHistory: [{ timestamp: {type: Number}}],
-    createdDate: [{ type: Number, default: Date.now }],
-    Updateddate: [{ type: Number, default: Date.now }],
+    createdBy: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+    },
     },
     {timestamp: true}
 );

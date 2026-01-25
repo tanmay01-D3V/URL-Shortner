@@ -1,9 +1,14 @@
 const express = require ("express");
 const Path = require ("path");
-const StaticRouter = require ("./Routes/StaticRouter");
+const cookieParser = require ("cookie-parser");
 const connectMongoDB = require("./connection");
-const urlRoute = require("./Routes/Url");
+const {restrictToLoggedInUsersOnly, checkAuth } = require("./middlewares/auth");
 const URL = require ("./models/url");
+
+const urlRoute = require("./Routes/Url");
+const StaticRouter = require ("./Routes/StaticRouter");
+const userRoute = require("./Routes/user");
+
 const app = express();
 const PORT = 8003;
 
@@ -15,6 +20,7 @@ app.set ("views",Path.resolve("./views"));
 
 app.use (express.json());
 app.use(express.urlencoded({extended:true}));
+app.use (cookieParser());
 
 app.get ("/test", async (req, res) => {
     const allUrls = await URL.find ({});
@@ -23,5 +29,7 @@ app.get ("/test", async (req, res) => {
 });
 
 app.use ("/url", urlRoute);
-app.use ("/", StaticRouter);
+app.use ("/user", userRoute);
+app.use ("/",  checkAuth, StaticRouter);
+
 app.listen(PORT, () => console.log(`Server Started at PORT ${PORT}`));

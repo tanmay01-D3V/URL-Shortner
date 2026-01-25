@@ -1,12 +1,13 @@
 const express = require("express");
 const {handlegenerateNewShortURL, handleGetAnalytics} = require("../controllers/Url");
+const {restrictToLoggedInUsersOnly} = require("../middlewares/auth");
 const URL = require("../models/url");
 
 const router = express.Router();
 
-router.post("/", handlegenerateNewShortURL);
+router.post("/", restrictToLoggedInUsersOnly, handlegenerateNewShortURL);
 
-router.get('/analytics/:shortId',handleGetAnalytics);
+router.get('/analytics/:shortId', restrictToLoggedInUsersOnly, handleGetAnalytics);
 
 router.get("/:shortId", async (req, res) => {
     const shortID = req.params.shortId;
