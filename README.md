@@ -1,184 +1,134 @@
-# URL Shortener
+# 🔗 URL Shortener - Full Stack Application
 
-A fast and efficient URL shortening service built with Node.js, Express, and MongoDB. This application allows users to create short, memorable links that redirect to longer URLs, with analytics tracking for each shortened link.
+A modern, fast, and secure URL shortening service built with a robust React frontend and a powerful Node.js backend. This application provides a seamless user experience for creating short links, tracking analytics, and managing user accounts.
 
-## Features
+---
 
-- **URL Shortening**: Convert long URLs into short, unique identifiers
-- **URL Redirection**: Automatically redirect short links to their original URLs
-- **Visit Analytics**: Track the number of visits and visit history for each shortened URL
-- **RESTful API**: Easy-to-use endpoints for creating, accessing, and analyzing shortened URLs
-- **MongoDB Integration**: Persistent data storage with MongoDB
-- **Lightweight**: Built with Express.js for optimal performance
+## ✨ Features
 
-## Tech Stack
+- **🚀 Instant URL Shortening**: Convert long, cumbersome URLs into short, manageable links.
+- **📊 Real-time Analytics**: Track total clicks and detailed visit history for every shortened URL.
+- **🔐 Secure Authentication**: Full user signup and login system powered by **JWT (JSON Web Tokens)**.
+- **🛡️ Protected Routes**: User-specific dashboard and results pages accessible only to authenticated users.
+- **🎨 Premium UI/UX**: Beautiful, responsive interface built with **Tailwind CSS 4** and modern React patterns.
+- **⚡ High Performance**: Ultra-fast redirection and API responses using **Express 5** and **MongoDB**.
 
-- **Runtime**: Node.js
-- **Framework**: Express.js
-- **Database**: MongoDB
-- **ID Generation**: shortid library
-- **Port**: 8003
+---
 
-## Project Structure
+## 🛠️ Tech Stack
 
-```
+### Frontend
+- **Framework**: [React 19](https://react.dev/)
+- **Build Tool**: [Vite](https://vitejs.dev/)
+- **Styling**: [Tailwind CSS 4](https://tailwindcss.com/)
+- **Routing**: [React Router 7](https://reactrouter.com/)
+- **Icons**: [Lucide React](https://lucide.dev/)
+- **API Client**: [Axios](https://axios-http.com/)
+
+### Backend
+- **Runtime**: [Node.js](https://nodejs.org/)
+- **Framework**: [Express 5](https://expressjs.com/)
+- **Database**: [MongoDB](https://www.mongodb.com/)
+- **Auth**: JWT (JSON Web Tokens) & Cookie-parser
+- **ID Generation**: [Nanoid](https://github.com/ai/nanoid) / [Shortid](https://github.com/dylang/shortid)
+
+---
+
+## 📂 Project Structure
+
+```text
 URL-Shortner/
-├── connection.js          # MongoDB connection configuration
-├── index.js               # Main Express server file
-├── package.json           # Project dependencies
-├── controllers/
-│   └── Url.js            # Business logic for URL operations
-├── models/
-│   └── url.js            # MongoDB URL schema model
-└── Routes/
-    └── Url.js            # API endpoint definitions
+├── backend/                # Express.js Server
+│   ├── controllers/        # Business logic
+│   ├── models/             # MongoDB Schemas
+│   ├── Routes/             # API Endpoints
+│   ├── middlewares/        # Auth & validation
+│   ├── service/            # Helper services (JWT)
+│   └── index.js            # Entry point
+├── frontend/               # React Application
+│   ├── src/
+│   │   ├── components/     # Reusable UI components
+│   │   ├── pages/          # Page views (Home, Login, Signup, Result)
+│   │   ├── App.jsx         # Main App logic
+│   │   └── api.js          # Axios configuration
+│   └── index.html
+└── README.md
 ```
 
-## Installation
+---
 
-1. Clone the repository:
+## 🚀 Getting Started
+
+### Prerequisites
+- Node.js (v18+)
+- MongoDB (Running locally or on Atlas)
+
+### 1. Clone the Repository
 ```bash
 git clone https://github.com/tanmay01-D3V/URL-Shortner.git
 cd URL-Shortner
 ```
 
-2. Install dependencies:
+### 2. Backend Setup
 ```bash
+cd backend
 npm install
-```
-
-3. Ensure MongoDB is running on your local machine:
-```bash
-# MongoDB should be running on mongodb://localhost:27017/
-```
-
-4. Start the server:
-```bash
+# Ensure MongoDB is running on mongodb://localhost:27017/
 npm start
 ```
+*The server will start on `http://localhost:8003`*
 
-The server will start on `http://localhost:8003`
-
-## API Endpoints
-
-### 1. Create a Shortened URL
-**POST** `/`
-
-Request body:
-```json
-{
-  "url": "https://www.example.com/very/long/url/path"
-}
-```
-
-Response:
-```json
-{
-  "id": "abc123xyz"
-}
-```
-
-### 2. Redirect to Original URL
-**GET** `/:shortId`
-
-- Redirects to the original URL stored in the database
-- Automatically increments the visit counter
-- Records visit timestamp in the analytics
-
-Example: `GET /abc123xyz` → Redirects to the original URL
-
-### 3. Get Analytics for a Short URL
-**GET** `/analytics/:shortId`
-
-Response:
-```json
-{
-  "TotalClicks": 5,
-  "analytics": [
-    {
-      "timestamp": 1674432000000
-    },
-    {
-      "timestamp": 1674432015000
-    }
-    // ... more visit records
-  ]
-}
-```
-
-## Database Schema
-
-### URL Model
-
-```javascript
-{
-  shortID: String,           // Unique short identifier
-  redirectURL: String,       // Original long URL
-  visitHistory: [{
-    timestamp: Date          // Timestamp of each visit
-  }]
-}
-```
-
-## Usage Examples
-
-### Create a Short URL
+### 3. Frontend Setup
 ```bash
-curl -X POST http://localhost:8003/ \
-  -H "Content-Type: application/json" \
-  -d '{"url": "https://www.google.com"}'
+cd ../frontend
+npm install
+npm run dev
 ```
+*The app will be available at `http://localhost:5173`*
 
-### Access the Short URL (Redirect)
-```bash
-curl -L http://localhost:8003/abc123xyz
-# Will redirect to https://www.google.com
-```
+---
 
-### Get Analytics
-```bash
-curl http://localhost:8003/analytics/abc123xyz
-```
+## 🔌 API Endpoints
 
-## Dependencies
+### User Authentication
+| Method | Endpoint | Description |
+| :--- | :--- | :--- |
+| `POST` | `/api/user/signup` | Register a new user |
+| `POST` | `/api/user/login` | Authenticate user & receive cookie |
 
-- **express**: Web framework for Node.js
-- **shortid**: Unique ID generator for short URLs
-- **mongoose**: MongoDB object modeling
+### URL Operations
+| Method | Endpoint | Description |
+| :--- | :--- | :--- |
+| `POST` | `/api/url` | Create a shortened URL (Auth Required) |
+| `GET` | `/api/url/analytics/:shortId` | Get click analytics |
+| `GET` | `/:shortId` | Redirect to original URL |
 
-Install dependencies with:
-```bash
-npm install express shortid mongoose
-```
+---
 
-## Error Handling
+## 🤝 Contributing
 
-- **Missing URL**: Returns `400 Bad Request` if URL is not provided when creating a short link
-- **Invalid Short ID**: Returns `404 Not Found` if the short ID doesn't exist in the database
+Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
-## Future Enhancements
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-- User authentication and authorization
-- Custom short URL slugs
-- URL expiration/TTL
-- Rate limiting
-- Admin dashboard for statistics
-- QR code generation
-- Link preview before redirect
-- Database persistence optimization
+---
 
-## Contributing
+## 📄 License
 
-Contributions are welcome! Feel free to submit issues and enhancement requests.
+Distributed under the MIT License. See `LICENSE` for more information.
 
-## License
+---
 
-This project is open source and available under the MIT License.
+## ✍️ Author
 
-## Author
+**Tanmay** - [tanmay01-D3V](https://github.com/tanmay01-D3V)
 
-Created by [tanmay01-D3V](https://github.com/tanmay01-D3V)
+---
 
-## Support
+## ⭐️ Support
 
-For issues or questions, please create an issue on the [GitHub repository](https://github.com/tanmay01-D3V/URL-Shortner).
+If you like this project, please give it a star! ⭐
