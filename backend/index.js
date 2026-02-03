@@ -29,20 +29,24 @@ app.get("/api/test", async (req, res) => {
     return res.json({ urls: allUrls });
 });
 
-// Serve static files from frontend/dist
-app.use(express.static(path.join(__dirname, "../frontend/dist")));
+// Serve static files only in non-production environments
+// Vercel handles static file serving through vercel.json
+if (process.env.NODE_ENV !== 'production') {
+    app.use(express.static(path.join(__dirname, "../frontend/dist")));
+}
 
 app.use("/api/url", urlRoute);
 app.use("/api/user", userRoute);
 
-// Handle React routing, return all requests to React app
-app.get(/.*/, (req, res) => {
-    // Check if it's an API route that wasn't handled
-    if (req.path.startsWith("/api")) {
-        return res.status(404).json({ error: "API endpoint not found" });
-    }
-    res.sendFile(path.join(__dirname, "../frontend/dist/index.html"));
-});
+// Handle React routing for local development
+if (process.env.NODE_ENV !== 'production') {
+    app.get(/.*/, (req, res) => {
+        if (req.path.startsWith("/api")) {
+            return res.status(404).json({ error: "API endpoint not found" });
+        }
+        res.sendFile(path.join(__dirname, "../frontend/dist/index.html"));
+    });
+}
 
 if (process.env.NODE_ENV !== 'production') {
     app.listen(PORT, () => console.log(`Server Started at PORT ${PORT}`));
