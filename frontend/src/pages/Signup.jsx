@@ -18,8 +18,10 @@ const Signup = () => {
 
         try {
             const response = await api.post('/user', { username, email, password });
-            if (response.data.status === 'success') {
+            if (response?.data?.status === 'success') {
                 navigate('/login');
+            } else {
+                setError(response?.data?.error || 'Registration failed. Try a different email.');
             }
         } catch (err) {
             setError(err.response?.data?.error || 'Registration failed. Try a different email.');

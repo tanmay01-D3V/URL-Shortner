@@ -15,8 +15,11 @@ const Home = () => {
     const featuresRef = useRef(null);
 
     useEffect(() => {
-        const ctx = gsap.context(() => {
-            const tl = gsap.timeline({ delay: 1.2 });
+        if (typeof window.gsap === 'undefined' && typeof gsap === 'undefined') return;
+
+        const gsapLib = window.gsap || gsap;
+        const ctx = gsapLib.context(() => {
+            const tl = gsapLib.timeline({ delay: 1.2 });
 
             tl.from(titleRef.current, {
                 y: 50,

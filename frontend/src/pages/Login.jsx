@@ -17,10 +17,16 @@ const Login = () => {
 
         try {
             const response = await api.post('/user/login', { email, password });
-            if (response.data.status === 'success') {
-                localStorage.setItem('user', JSON.stringify(response.data.user));
-                localStorage.setItem('token', response.data.token);
+            if (response?.data?.status === 'success') {
+                try {
+                    localStorage.setItem('user', JSON.stringify(response.data.user || {}));
+                    localStorage.setItem('token', response.data.token || '');
+                } catch (storageErr) {
+                    console.warn('localStorage unavailable:', storageErr);
+                }
                 navigate('/');
+            } else {
+                setError(response?.data?.error || 'Invalid response from server.');
             }
         } catch (err) {
             setError(err.response?.data?.error || 'Invalid credentials. Please try again.');
