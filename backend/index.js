@@ -44,4 +44,8 @@ app.get(/.*/, (req, res) => {
     res.sendFile(path.join(__dirname, "../frontend/dist/index.html"));
 });
 
-app.listen(PORT, () => console.log(`Server Started at PORT ${PORT}`));
+if (process.env.NODE_ENV !== 'production') {
+    app.listen(PORT, () => console.log(`Server Started at PORT ${PORT}`));
+}
+
+module.exports = app;
