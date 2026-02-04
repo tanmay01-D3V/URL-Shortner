@@ -88,6 +88,13 @@ npm run dev
 
 ---
 
+## 🌐 Live Development Link (Dev Tunnel)
+
+You can access the application remotely via the following link:
+🔗 **[https://sll09pc9-5173.inc1.devtunnels.ms/](https://sll09pc9-5173.inc1.devtunnels.ms/)**
+
+---
+
 ## 🔌 API Endpoints
 
 ### User Authentication
