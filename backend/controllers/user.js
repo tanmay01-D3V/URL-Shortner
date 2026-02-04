@@ -17,25 +17,30 @@ async function handleUserSignup(req, res) {
 }
 
 async function handleUserLogin(req, res) {
-    const { email, password } = req.body;
-    const userData = await user.findOne({ email, password });
-    if (!userData)
-        return res.status(401).json({
-            status: 'error',
-            error: "Invalid Credentials",
-        });
+    try {
+        const { email, password } = req.body;
+        const userData = await user.findOne({ email, password });
+        if (!userData)
+            return res.status(401).json({
+                status: 'error',
+                error: "Invalid Credentials",
+            });
 
-    const token = setUser(userData);
-    res.cookie('uid', token);
-    return res.json({
-        status: 'success',
-        token,
-        user: {
-            id: userData._id,
-            username: userData.username,
-            email: userData.email
-        }
-    });
+        const token = setUser(userData);
+        res.cookie('uid', token);
+        return res.json({
+            status: 'success',
+            token,
+            user: {
+                id: userData._id,
+                username: userData.username,
+                email: userData.email
+            }
+        });
+    } catch (error) {
+        console.error('Login error:', error);
+        return res.status(500).json({ status: 'error', error: 'Server error. Please try again.' });
+    }
 }
 
 module.exports = { handleUserSignup, handleUserLogin };
