@@ -1,9 +1,8 @@
-
-# 🔗 URL Shortener - Full St
+# 🔗 URL Shortener - Full Stack Application
 
 https://github.com/user-attachments/assets/7cc9fee3-9232-4d2b-8832-979f922e0cc3
 
-ack Application
+
 
 A modern, fast, and secure URL shortening service built with a robust React frontend and a powerful Node.js backend. This application provides a seamless user experience for creating short links, tracking analytics, and managing user accounts.
 
